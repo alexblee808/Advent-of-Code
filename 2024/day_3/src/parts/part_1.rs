@@ -46,7 +46,7 @@ fn get_memory_sum(memory: String) -> i32 {
 
 fn get_products(memory: String) -> Vec<i32> {
     debug!("Parsing the memory string: {}", memory);
-    let re = Regex::new(r"mul\((?<a>[0-9]{1,3}),(?<b>[0-9]{1,3})\)").unwrap();
+    let re: Regex = Regex::new(r"mul\((?<a>[0-9]{1,3}),(?<b>[0-9]{1,3})\)").unwrap();
     // 'm' is a 'Match', and 'as_str()' returns the matching part of the memory.
     let products: Vec<i32> = re
         .captures_iter(&memory)
