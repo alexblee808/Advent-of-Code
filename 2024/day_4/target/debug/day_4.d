@@ -1,1 +1,0 @@
-/Users/alexlee/Desktop/Projects/Advent-of-Code/2024/day_4/target/debug/day_4: /Users/alexlee/Desktop/Projects/Advent-of-Code/2024/day_4/src/main.rs /Users/alexlee/Desktop/Projects/Advent-of-Code/2024/day_4/src/parts/mod.rs /Users/alexlee/Desktop/Projects/Advent-of-Code/2024/day_4/src/parts/part_1.rs /Users/alexlee/Desktop/Projects/Advent-of-Code/2024/day_4/src/parts/part_2.rs
