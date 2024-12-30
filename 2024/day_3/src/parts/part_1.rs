@@ -58,11 +58,8 @@ fn get_products(memory: String) -> Vec<i32> {
             // `&caps["a"]` because the lifetime of the former is the same as the
             // lifetime of `hay` above, but the lifetime of the latter is tied to the
             // lifetime of `caps` due to how the `Index` trait is defined.
-            let mul_a = caps.name("a").unwrap().as_str();
-            let mul_b = caps.name("b").unwrap().as_str();
-
-            let mul_a = mul_a.parse::<i32>().unwrap();
-            let mul_b = mul_b.parse::<i32>().unwrap();
+            let mul_a = caps.name("a").unwrap().as_str().parse::<i32>().unwrap();
+            let mul_b = caps.name("b").unwrap().as_str().parse::<i32>().unwrap();
 
             debug!("Parsed: mul({},{})", mul_a, mul_b);
             mul_a * mul_b
