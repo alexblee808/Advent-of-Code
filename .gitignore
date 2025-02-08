@@ -1,1 +1,11 @@
-*/target/*
+# IDE
+**/.vscode/
+
+# Build dependencies
+**/target/
+
+# Advent of Code
+# Private token and session ID
+.aocrc
+# Inputs
+input*.txt
