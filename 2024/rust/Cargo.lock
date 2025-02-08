@@ -195,9 +195,22 @@ name = "day-07"
 version = "0.1.0"
 dependencies = [
  "divan",
+ "miette",
+ "nom",
+ "rstest",
+ "test-log",
+]
+
+[[package]]
+name = "day-08"
+version = "0.1.0"
+dependencies = [
+ "divan",
+ "glam",
  "itertools",
  "miette",
  "nom",
+ "nom_locate",
  "rstest",
  "test-log",
  "tracing",
