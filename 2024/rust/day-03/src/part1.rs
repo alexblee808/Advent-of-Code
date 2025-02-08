@@ -2,7 +2,7 @@ use regex::Regex;
 
 #[tracing::instrument]
 pub fn process(input: &str) -> miette::Result<String> {
-    let memory_sums: i32 = input.lines().map(|line| get_memory_sum(line)).sum();
+    let memory_sums: i32 = input.lines().map(get_memory_sum).sum();
 
     Ok(memory_sums.to_string())
 }
@@ -12,7 +12,7 @@ fn get_memory_sum(memory: &str) -> i32 {
     // debug!("Taking the sum of the products: {:?}", products);
     let sum: i32 = products.iter().sum();
     // debug!("The sum of the products is: {}", sum);
-    return sum;
+    sum
 }
 
 fn get_products(memory: &str) -> Vec<i32> {
@@ -20,7 +20,7 @@ fn get_products(memory: &str) -> Vec<i32> {
     let re: Regex = Regex::new(r"mul\((?<a>[0-9]{1,3}),(?<b>[0-9]{1,3})\)").unwrap();
     // 'm' is a 'Match', and 'as_str()' returns the matching part of the memory.
     let products: Vec<i32> = re
-        .captures_iter(&memory)
+        .captures_iter(memory)
         .map(|caps| {
             // The unwraps are okay because every capture group must match if the whole
             // regex matches, and in this context, we know we have a match.
@@ -37,7 +37,7 @@ fn get_products(memory: &str) -> Vec<i32> {
         })
         .collect();
 
-    return products;
+    products
 }
 
 #[cfg(test)]

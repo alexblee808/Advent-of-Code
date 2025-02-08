@@ -1,36 +1,7 @@
-use log::debug;
-use log::error;
-use log::info;
-use std::fs::File;
-use std::io::{BufRead, BufReader};
+#[tracing::instrument]
+pub fn process(input: &str) -> miette::Result<String> {
+    let characters: Vec<String> = input.lines().map(|line| line.to_string()).collect();
 
-pub fn part_1(filename: &String) -> i32 {
-    println!("Advent of Code 2024, Day 4 [Part 1]");
-
-    // Create a file reader for the input file
-    info!("Reading report data from file: {}", filename);
-    let file = File::open(filename).expect("Unable to open file");
-    let reader = BufReader::new(file);
-
-    // Retrieve all the lines of text
-    debug!("Reading lines of memory from file");
-    let characters: Vec<String> = reader
-        .lines()
-        .map(|line| match line {
-            Ok(line) => line,
-            Err(error) => {
-                error!("Problem opening the file: {:?}", error);
-                (&"").to_string()
-            }
-        })
-        .collect();
-
-    let ans: i32 = count_xmas(characters);
-    println!("The number of XMAS occurrences is: {}", ans);
-    return ans
-}
-
-fn count_xmas(characters: Vec<String>) -> i32 {
     let mut xmas_count: i32 = 0;
 
     for (c, row) in characters.iter().enumerate() {
@@ -72,7 +43,8 @@ fn count_xmas(characters: Vec<String>) -> i32 {
             }
         }
     }
-    return xmas_count
+
+    Ok(xmas_count.to_string())
 }
 
 #[cfg(test)]
@@ -80,8 +52,18 @@ mod tests {
     use super::*;
 
     #[test]
-    fn example_test() {
-        let result: i32 = part_1(&"inputs/test.txt".to_owned());
-        assert_eq!(result, 18);
+    fn test_process() -> miette::Result<()> {
+        let input = "MMMSXXMASM
+MSAMXMSMSA
+AMXSXMAAMM
+MSAMASMSMX
+XMASAMXAMM
+XXAMMXXAMA
+SMSMSASXSS
+SAXAMASAAA
+MAMMMXMMMM
+MXMXAXMASX";
+        assert_eq!("18", process(input)?);
+        Ok(())
     }
 }

@@ -20,7 +20,7 @@ fn get_memory_sum(memory: &str, do_mul: bool) -> (i32, bool) {
     // debug!("Taking the sum of the products: {:?}", products);
     let sum: i32 = products.iter().sum();
     // debug!("The sum of the products is: {}", sum);
-    return (sum, _do_mul);
+    (sum, _do_mul)
 }
 
 fn get_products(memory: &str, do_mul: bool) -> (Vec<i32>, bool) {
@@ -39,12 +39,12 @@ fn get_products(memory: &str, do_mul: bool) -> (Vec<i32>, bool) {
 
     let mut do_mul: bool = do_mul;
     let products: Vec<i32> = re
-        .captures_iter(&memory)
+        .captures_iter(memory)
         .map(|caps| {
-            if caps.name("do") != None {
+            if caps.name("do").is_some() {
                 do_mul = true;
                 0
-            } else if caps.name("dont") != None {
+            } else if caps.name("dont").is_some() {
                 do_mul = false;
                 0
             } else if do_mul {
@@ -64,7 +64,7 @@ fn get_products(memory: &str, do_mul: bool) -> (Vec<i32>, bool) {
         })
         .collect();
 
-    return (products, do_mul);
+    (products, do_mul)
 }
 
 #[cfg(test)]
