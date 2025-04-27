@@ -34,53 +34,90 @@ pub fn process(input: &str) -> miette::Result<String> {
             continue;
         }
 
-        // Handle case when a file is being allocated from
-        // the left
-        if is_file(index_front) {
-            println!("{}", id_number_front);
-            checksum +=
-                (id_number_front * position_front) as u64;
-            values[index_front] -= 1;
-            position_front += 1;
-            continue;
-        }
-
-        // Handle case when a file is being allocated from
-        // the right
-        // Skip over the free space
+        // Remove free space from the right
         if !!!is_file(index_end) {
             position_end -= values[index_end];
             values[index_end] = 0;
-            continue;
         }
 
-        // Loop over the file IDs in decreasing order
-        let mut inner_index_end: usize = index_end;
-        while index_front < inner_index_end {
-            if index_front >= inner_index_end {
-                values[index_front] = 0;
-                break;
-            } else if is_file(inner_index_end) && values[index_front]
-                >= values[inner_index_end]
-                && values[inner_index_end] > 0
+        // Allocate the file from the right
+        let mut inner_index_front: usize = index_front;
+        while inner_index_front < index_end {
+            if is_file(inner_index_front)
+                || values[inner_index_front]
+                    < values[index_end]
             {
-                let inner_id_number_end =
-                    index_end as u32 / 2;
-                for _ in 0..values[inner_index_end] {
-                    checksum += (inner_id_number_end
-                        * position_front)
-                        as u64;
-                    position_front += 1;
-                    position_end -= 1;
-                    println!("{}", inner_id_number_end);
-                }
-                values[index_front] -=
-                    values[inner_index_end];
-                values[inner_index_end] = 0;
+                inner_index_front += 1;
             }
-            inner_index_end -= 1;
+            for _ in 0..values[index_end] {
+                checksum +=
+                    (position_front * id_number_end) as u64;
+                position_front += 1;
+            }
+            values[inner_index_front] -= values[index_end];
+            values[index_end] = 0;
+            break;
         }
-        
+
+        // Allocate the file inplace because it cannot be
+        // moved
+        if values[index_end] != 0 {
+            println!("Adding file in place");
+        }
+
+        // // Handle case when a file is being
+        // allocated from // the left
+        // if is_file(index_front) {
+        //     println!("{}", id_number_front);
+        //     checksum +=
+        //         (id_number_front *
+        // position_front) as u64;
+        //     values[index_front] -= 1;
+        //     position_front += 1;
+        //     continue;
+        // }
+
+        // // Handle case when a file is being
+        // allocated from // the right
+        // // Skip over the free space
+        // if !!!is_file(index_end) {
+        //     position_end -= values[index_end];
+        //     values[index_end] = 0;
+        //     continue;
+        // }
+
+        // // Loop over the file IDs in decreasing
+        // order
+        // let mut inner_index_front: usize =
+        // index_front; while index_front
+        // < inner_index_end {
+        //     if index_front >= inner_index_end {
+        //         values[index_front] = 0;
+        //         break;
+        //     } else if is_file(inner_index_end)
+        // && values[index_front]
+        //         >= values[inner_index_end]
+        //         && values[inner_index_end] > 0
+        //     {
+        //         let inner_id_number_end =
+        //             index_end as u32 / 2;
+        //         for _ in
+        // 0..values[inner_index_end] {
+        //             checksum +=
+        // (inner_id_number_end
+        //                 * position_front)
+        //                 as u64;
+        //             position_front += 1;
+        //             position_end -= 1;
+        //             println!("{}",
+        // inner_id_number_end);         }
+        //         values[index_front] -=
+        //             values[inner_index_end];
+        //         values[inner_index_end] = 0;
+        //     }
+        //     inner_index_end -= 1;
+        // }
+    }
 
     Ok(checksum.to_string())
 }
